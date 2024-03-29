@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using System.Windows.Controls;
 using System.Threading;
-using ProjektWsp;
+using Projekt.View;
 
 namespace TestProject2
 {
