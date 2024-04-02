@@ -1,4 +1,4 @@
-namespace LogicTest
+namespace LogikaTest
 {
     public class Tests
     {

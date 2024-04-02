@@ -19,7 +19,7 @@ namespace Projekt.View
         public MainWindow()
         {
             InitializeComponent();
-            TextBlock block = new TextBlock();
+            /*TextBlock block = new TextBlock();
             block.Text = "Test";
             block.HorizontalAlignment= HorizontalAlignment.Center;
             block.VerticalAlignment= VerticalAlignment.Center;
@@ -27,7 +27,7 @@ namespace Projekt.View
             block.Foreground = Brushes.Black;
 
             this.Content = block;
-            this.RegisterName("TextBlock1", block);
+            this.RegisterName("TextBlock1", block);*/
         }
     }
 }

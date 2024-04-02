@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:ProjektWsp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Canvas x:Name="simulationCanvas">
+        <Rectangle Width="748" Height="406" Stroke="Black" StrokeThickness="2"
+                   Canvas.Left="20" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-    </Grid>
+        <Ellipse Fill="Red" Width="76" Height="76" Canvas.Left="50" Canvas.Top="50" />
+        <Ellipse Fill="Green" Width="76" Height="76" Canvas.Left="126" Canvas.Top="123" />
+    </Canvas>
 </Window>

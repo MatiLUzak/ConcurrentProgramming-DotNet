@@ -1,7 +1,6 @@
-﻿namespace Logika
-{
-    public class Class1
-    {
+﻿namespace Logika;
 
-    }
+public class Class1
+{
+
 }
