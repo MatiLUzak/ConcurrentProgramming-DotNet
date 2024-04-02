@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dane\Dane.csproj" />
+    <ProjectReference Include="..\Logika\Logika.csproj" />
   </ItemGroup>
 
 </Project>
