@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
+using Project.ViewModel;
 namespace Projekt.View
 {
     /// <summary>
@@ -19,15 +19,7 @@ namespace Projekt.View
         public MainWindow()
         {
             InitializeComponent();
-            /*TextBlock block = new TextBlock();
-            block.Text = "Test";
-            block.HorizontalAlignment= HorizontalAlignment.Center;
-            block.VerticalAlignment= VerticalAlignment.Center;
-            block.FontSize = 20;
-            block.Foreground = Brushes.Black;
-
-            this.Content = block;
-            this.RegisterName("TextBlock1", block);*/
+            DataContext = new BallViewModel();
         }
     }
 }
