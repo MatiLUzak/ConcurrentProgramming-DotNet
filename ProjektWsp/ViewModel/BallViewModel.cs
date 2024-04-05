@@ -17,10 +17,12 @@ namespace Project.ViewModel
         private Ball ball;
         private BallLogic ballLogic = new BallLogic();
         private DispatcherTimer timer = new DispatcherTimer();
-
+        private Random random = new Random();
+        private double speed;
         public BallViewModel()
         {
-            ball = new Ball { X = 50, Y = 50, VelocityX = 10, VelocityY = 10 };
+            speed = 5;
+            ball = new Ball { X = 50, Y = 50, VelocityX = speed*(random.Next(2)==0?1:-1), VelocityY = speed * (random.Next(2) == 0 ? 1 : -1) };
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += (s, e) => MoveBall();
             timer.Start();
@@ -45,7 +47,7 @@ namespace Project.ViewModel
                 if (ball.Y != value)
                 {
                     ball.Y = value;
-                    OnPropertyChanged(nameof(Y));
+                    OnPropertyChanged(nameof(Y)); 
                 }
             }
         }

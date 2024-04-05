@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjektWsp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="483" Width="848">
     <Canvas x:Name="simulationCanvas">
-        <Rectangle Width="748" Height="406" Stroke="Black" StrokeThickness="2"
-                   Canvas.Left="20" Canvas.Top="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Rectangle Width="828" Height="457" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="20" Canvas.Top="10"/>
         <Ellipse Fill="Green" Width="76" Height="76" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" />
     </Canvas>
 </Window>
