@@ -1,13 +1,25 @@
 ﻿<Window x:Class="Projekt.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ProjektWsp"
-        mc:Ignorable="d"
         Title="MainWindow" Height="483" Width="848">
-    <Canvas x:Name="simulationCanvas">
-        <Rectangle Width="828" Height="457" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="20" Canvas.Top="10"/>
-        <Ellipse Fill="Green" Width="76" Height="76" Canvas.Left="{Binding X}" Canvas.Top="{Binding Y}" />
+    <Canvas Width="828" Height="457">
+        <ItemsControl ItemsSource="{Binding Balls}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Ellipse Width="76" Height="76" Fill="Green"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
     </Canvas>
 </Window>

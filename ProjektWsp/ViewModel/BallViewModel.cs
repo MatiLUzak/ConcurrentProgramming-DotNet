@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -14,54 +15,47 @@ namespace Project.ViewModel
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private Ball ball;
+        public ObservableCollection<Ball> Balls { get; set; } = new ObservableCollection<Ball>();
         private BallLogic ballLogic = new BallLogic();
         private DispatcherTimer timer = new DispatcherTimer();
         private Random random = new Random();
-        private double speed;
+
         public BallViewModel()
         {
-            speed = 5;
-            ball = new Ball { X = 50, Y = 50, VelocityX = speed*(random.Next(2)==0?1:-1), VelocityY = speed * (random.Next(2) == 0 ? 1 : -1) };
+            InitializeBalls(5);
             timer.Interval = TimeSpan.FromMilliseconds(20);
-            timer.Tick += (s, e) => MoveBall();
+            timer.Tick += (s, e) => MoveBalls();
             timer.Start();
         }
-        public double X
-        {
-            get { return ball.X; }
-            set
-            {
-                if (ball.X != value)
-                {
-                    ball.X = value;
-                    OnPropertyChanged(nameof(X));
-                }
-            }
-        }
-        public double Y
-        {
-            get { return ball.Y; }
-            set
-            {
-                if (ball.Y != value)
-                {
-                    ball.Y = value;
-                    OnPropertyChanged(nameof(Y)); 
-                }
-            }
-        }
-        private void MoveBall()
-        {
-            ball=ballLogic.Move(ball);
-            OnPropertyChanged(nameof(X));
-            OnPropertyChanged(nameof(Y));
 
+        private void InitializeBalls(int numberOfBalls)
+        {
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                Balls.Add(new Ball
+                {
+                    X = random.Next(0, 828 - 76), 
+                    Y = random.Next(0, 457 - 76),
+                    VelocityX = 5 * (random.Next(2) == 0 ? 1 : -1),
+                    VelocityY = 5 * (random.Next(2) == 0 ? 1 : -1)
+                });
+            }
         }
+
+        private void MoveBalls()
+        {
+            foreach (var ball in Balls)
+            {
+                ballLogic.Move(ball);
+            }
+            OnPropertyChanged(nameof(Balls));// to chyba nie jest potrzebne 
+        }
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-    
+
+
 }
