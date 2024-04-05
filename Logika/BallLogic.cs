@@ -7,8 +7,8 @@ public class BallLogic
     private const int BallDiameter = 76;
     private const int CanvasWidth = 828;
     private const int CanvasHeight = 457;
-    private const int OffsetX = 20;
-    private const int OffsetY = 10;
+    private const int OffsetX = 0;
+    private const int OffsetY = 0;
 
     public Ball Move(Ball ball)
     {

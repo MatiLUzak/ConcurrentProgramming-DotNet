@@ -22,14 +22,15 @@ namespace Project.ViewModel
 
         public BallViewModel()
         {
-            InitializeBalls(5);
+            //InitializeBalls(5);
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += (s, e) => MoveBalls();
-            timer.Start();
+            //timer.Start();
         }
 
-        private void InitializeBalls(int numberOfBalls)
+        public void InitializeBalls(int numberOfBalls)
         {
+            Balls.Clear();
             for (int i = 0; i < numberOfBalls; i++)
             {
                 Balls.Add(new Ball
@@ -40,6 +41,10 @@ namespace Project.ViewModel
                     VelocityY = 5 * (random.Next(2) == 0 ? 1 : -1)
                 });
             }
+            if (!timer.IsEnabled)
+            {
+                timer.Start();
+            }
         }
 
         private void MoveBalls()
@@ -48,7 +53,7 @@ namespace Project.ViewModel
             {
                 ballLogic.Move(ball);
             }
-            OnPropertyChanged(nameof(Balls));// to chyba nie jest potrzebne 
+            //OnPropertyChanged(nameof(Balls));// to chyba nie jest potrzebne 
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
