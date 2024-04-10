@@ -1,3 +1,5 @@
+using Dane;
+using Moq;
 namespace DaneTest
 {
     public class Tests
