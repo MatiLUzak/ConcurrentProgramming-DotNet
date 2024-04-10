@@ -24,7 +24,7 @@ namespace Project.ViewModel
         {
             //InitializeBalls(5);
             timer.Interval = TimeSpan.FromMilliseconds(20);
-            timer.Tick += (s, e) => MoveBalls();
+            timer.Tick += async (s, e) => await MoveBallsAsync2();
             //timer.Start();
         }
 
@@ -47,13 +47,35 @@ namespace Project.ViewModel
             }
         }
 
-        private void MoveBalls()
+        /*private void MoveBalls()
         {
             foreach (var ball in Balls)
             {
                 ballLogic.Move(ball);
             }
             //OnPropertyChanged(nameof(Balls));// to chyba nie jest potrzebne 
+        }*/
+        private async Task MoveBallsAsync()
+        {
+            await Task.Run(() =>
+            {
+                foreach (var ball in Balls)
+                {
+                    ballLogic.Move(ball);
+                }
+            });
+        }
+        private async Task MoveBallsAsync2()
+        {
+           var moveTasks =new List<Task>(); 
+            foreach (var ball in Balls)
+            {
+                moveTasks.Add(Task.Run(() =>
+                {
+                    ballLogic.Move(ball);
+                }));
+            }
+            await Task.WhenAll(moveTasks);
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
