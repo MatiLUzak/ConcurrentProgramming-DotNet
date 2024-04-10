@@ -33,13 +33,14 @@ namespace Project.ViewModel
             Balls.Clear();
             for (int i = 0; i < numberOfBalls; i++)
             {
-                Balls.Add(new Ball
+                /*Balls.Add(new Ball
                 {
                     X = random.Next(0, 828 - 76), 
                     Y = random.Next(0, 457 - 76),
                     VelocityX = 5 * (random.Next(2) == 0 ? 1 : -1),
                     VelocityY = 5 * (random.Next(2) == 0 ? 1 : -1)
-                });
+                });*/
+                Balls.Add(ballLogic.CreateBall());
             }
             if (!timer.IsEnabled)
             {
@@ -54,7 +55,7 @@ namespace Project.ViewModel
                 ballLogic.Move(ball);
             }
             //OnPropertyChanged(nameof(Balls));// to chyba nie jest potrzebne 
-        }*/
+        }
         private async Task MoveBallsAsync()
         {
             await Task.Run(() =>
@@ -64,7 +65,7 @@ namespace Project.ViewModel
                     ballLogic.Move(ball);
                 }
             });
-        }
+        }*/
         private async Task MoveBallsAsync2()
         {
            var moveTasks =new List<Task>(); 

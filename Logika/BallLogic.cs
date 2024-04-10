@@ -1,4 +1,5 @@
 ﻿using Dane;
+using System;
 
 namespace Logika;
 
@@ -9,7 +10,7 @@ public class BallLogic
     private const int CanvasHeight = 457;
     private const int OffsetX = 0;
     private const int OffsetY = 0;
-
+    private Random random = new Random();
     public Ball Move(Ball ball)
     {
         ball.X += ball.VelocityX;
@@ -24,6 +25,17 @@ public class BallLogic
             ball.VelocityY = -ball.VelocityY;
         }
 
+        return ball;
+    }
+    public Ball CreateBall()
+    {
+       Ball ball= new Ball
+        {
+            X = random.Next(0, 828 - 76),
+            Y = random.Next(0, 457 - 76),
+            VelocityX = 5 * (random.Next(2) == 0 ? 1 : -1),
+            VelocityY = 5 * (random.Next(2) == 0 ? 1 : -1)
+        };
         return ball;
     }
 }
