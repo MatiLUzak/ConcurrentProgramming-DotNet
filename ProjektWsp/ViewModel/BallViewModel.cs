@@ -11,9 +11,9 @@ using Logika;
 
 namespace Project.ViewModel
 {
-    public class BallViewModel : INotifyPropertyChanged
+    public class BallViewModel /*: INotifyPropertyChanged*/
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
 
         public ObservableCollection<Ball> Balls { get; set; } = new ObservableCollection<Ball>();
         private BallLogic ballLogic = new BallLogic();
@@ -79,10 +79,10 @@ namespace Project.ViewModel
             await Task.WhenAll(moveTasks);
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
+       /* protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        }*/
     }
 
 
