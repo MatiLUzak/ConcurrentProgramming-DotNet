@@ -38,11 +38,17 @@ namespace Dane
         public double VelocityX { get; set; }
         public double VelocityY { get; set; }
 
-        public Rectangle CollisionRect { get; private set; }
+        private Rectangle collisionRect;
+        public Rectangle CollisionRect => collisionRect;
 
         private void UpdateRect()
         {
-            CollisionRect = new Rectangle((int)Math.Round(X), (int)Math.Round(Y), 76, 76);
+            collisionRect.X = (int)Math.Round(X);
+            collisionRect.Y = (int)Math.Round(Y);
+        }
+        public Ball()
+        {
+            collisionRect = new Rectangle((int)Math.Round(X), (int)Math.Round(Y), 76, 76);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
