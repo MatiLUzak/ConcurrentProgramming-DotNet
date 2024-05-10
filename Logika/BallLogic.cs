@@ -10,108 +10,100 @@ public class BallLogic
     private const int CanvasHeight = 457;
     private const int OffsetX = 0;
     private const int OffsetY = 0;
+    private const double Margin = 0.5; // Smaller margin for accuracy
     private Random random = new Random();
+
     public Ball Move(Ball ball)
     {
         ball.X += ball.VelocityX;
         ball.Y += ball.VelocityY;
 
-        if (ball.X <= 0 +OffsetX || ball.X >= CanvasWidth - BallDiameter + OffsetX)
+        // Bounce off canvas edges
+        if (ball.X <= OffsetX)
         {
-            ball.VelocityX = -ball.VelocityX;
+            ball.X = OffsetX;
+            ball.VelocityX = Math.Abs(ball.VelocityX);
         }
-        if (ball.Y <= 0 + OffsetY || ball.Y >= CanvasHeight - BallDiameter + OffsetY)
+        else if (ball.X >= CanvasWidth - BallDiameter + OffsetX)
         {
-            ball.VelocityY = -ball.VelocityY;
+            ball.X = CanvasWidth - BallDiameter + OffsetX;
+            ball.VelocityX = -Math.Abs(ball.VelocityX);
+        }
+
+        if (ball.Y <= OffsetY)
+        {
+            ball.Y = OffsetY;
+            ball.VelocityY = Math.Abs(ball.VelocityY);
+        }
+        else if (ball.Y >= CanvasHeight - BallDiameter + OffsetY)
+        {
+            ball.Y = CanvasHeight - BallDiameter + OffsetY;
+            ball.VelocityY = -Math.Abs(ball.VelocityY);
         }
 
         return ball;
     }
+
     public Ball CreateBall()
     {
-       Ball ball= new Ball
+        Ball ball = new Ball
         {
-            X = random.Next(0, 828 - 76),
-            Y = random.Next(0, 457 - 76),
+            X = random.Next(OffsetX, CanvasWidth - BallDiameter + OffsetX),
+            Y = random.Next(OffsetY, CanvasHeight - BallDiameter + OffsetY),
             VelocityX = 5 * (random.Next(2) == 0 ? 1 : -1),
             VelocityY = 5 * (random.Next(2) == 0 ? 1 : -1)
         };
         return ball;
     }
-    public void CheckAndHandleCollision(Ball ball,IList<Ball> balls)
+
+    public void CheckAndHandleCollision(Ball ball, IList<Ball> balls)
     {
         var rect1 = ball.CollisionRect;
-        for(int i = 0;i < balls.Count; i++)
+        for (int i = 0; i < balls.Count; i++)
         {
             var b = balls[i];
-            if(b==ball) continue;
-            var rect2= b.CollisionRect;
+            if (b == ball) continue;
+            var rect2 = b.CollisionRect;
             if (rect1.IntersectsWith(rect2))
             {
                 ResolveCollision(ball, b);
             }
         }
-
     }
+
     private void ResolveCollision(Ball ball1, Ball ball2)
     {
-        // Różnica w położeniu na osi X i Y
+        // Oblicz różnice w położeniu (od lewego górnego rogu)
         double deltaX = ball2.X - ball1.X;
         double deltaY = ball2.Y - ball1.Y;
+        double distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
 
-        // Ustal kierunek kolizji
-        bool collisionOnXAxis = Math.Abs(deltaX) > Math.Abs(deltaY);
-
-        // Oblicz overlap (przecięcie)
-        double overlap;
-
-        if (collisionOnXAxis)
+        // Zapobieganie przyklejeniu przez zapewnienie minimalnego odstępu
+        double overlap = BallDiameter - distance + Margin;
+        if (overlap > 0)
         {
-            // Kolizja bardziej w osi X
-            overlap = BallDiameter - Math.Abs(deltaX);
+            // Oblicz znormalizowaną różnicę
+            double normX = deltaX / distance;
+            double normY = deltaY / distance;
 
-            // Przesuń kule poza siebie
-            if (deltaX > 0)
-            {
-                ball1.X = Math.Max(OffsetX, ball1.X - overlap / 2);
-                ball2.X = Math.Min(CanvasWidth - BallDiameter, ball2.X + overlap / 2);
-            }
-            else
-            {
-                ball1.X = Math.Min(CanvasWidth - BallDiameter, ball1.X + overlap / 2);
-                ball2.X = Math.Max(OffsetX, ball2.X - overlap / 2);
-            }
+            // Przesuń kulki, aby zapobiec przyklejeniu
+            ball1.X -= normX * overlap / 2;
+            ball1.Y -= normY * overlap / 2;
+            ball2.X += normX * overlap / 2;
+            ball2.Y += normY * overlap / 2;
 
-            // Odwróć prędkości w osi X
-            ball1.VelocityX = -ball1.VelocityX;
-            ball2.VelocityX = -ball2.VelocityX;
-        }
-        else
-        {
-            // Kolizja bardziej w osi Y
-            overlap = BallDiameter - Math.Abs(deltaY);
+            // Oblicz względną prędkość w kierunku kolizji
+            double relVelocityX = ball1.VelocityX - ball2.VelocityX;
+            double relVelocityY = ball1.VelocityY - ball2.VelocityY;
+            double dotProduct = relVelocityX * normX + relVelocityY * normY;
 
-            // Przesuń kule poza siebie
-            if (deltaY > 0)
-            {
-                ball1.Y = Math.Max(OffsetY, ball1.Y - overlap / 2);
-                ball2.Y = Math.Min(CanvasHeight - BallDiameter, ball2.Y + overlap / 2);
-            }
-            else
-            {
-                ball1.Y = Math.Min(CanvasHeight - BallDiameter, ball1.Y + overlap / 2);
-                ball2.Y = Math.Max(OffsetY, ball2.Y - overlap / 2);
-            }
-
-            // Odwróć prędkości w osi Y
-            ball1.VelocityY = -ball1.VelocityY;
-            ball2.VelocityY = -ball2.VelocityY;
+            // Wymień prędkości (zasada zachowania pędu)
+            double impulse = 2 * dotProduct / (ball1.Mass + ball2.Mass);
+            ball1.VelocityX -= impulse * ball2.Mass * normX;
+            ball1.VelocityY -= impulse * ball2.Mass * normY;
+            ball2.VelocityX += impulse * ball1.Mass * normX;
+            ball2.VelocityY += impulse * ball1.Mass * normY;
         }
     }
 
-
-
-
-
 }
-

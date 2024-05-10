@@ -41,6 +41,8 @@ namespace Dane
         private Rectangle collisionRect;
         public Rectangle CollisionRect => collisionRect;
 
+        public double Mass = 5.0;
+
         private void UpdateRect()
         {
             collisionRect.X = (int)Math.Round(X);
