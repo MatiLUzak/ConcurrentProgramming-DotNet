@@ -66,6 +66,7 @@ namespace Project.ViewModel
                 }
             });
         }*/
+        private static readonly object collisionLock = new object();
         private async Task MoveBallsAsync2()
         {
            var moveTasks =new List<Task>(); 
@@ -74,6 +75,10 @@ namespace Project.ViewModel
                 moveTasks.Add(Task.Run(() =>
                 {
                     ballLogic.Move(ball);
+                    lock (collisionLock)
+                    {
+                        ballLogic.CheckAndHandleCollision(ball,Balls);
+                    }
                 }));
             }
             await Task.WhenAll(moveTasks);
