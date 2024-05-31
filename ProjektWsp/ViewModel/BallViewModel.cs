@@ -19,12 +19,14 @@ namespace Project.ViewModel
         private BallLogic ballLogic = new BallLogic();
         private DispatcherTimer timer = new DispatcherTimer();
         private Random random = new Random();
+        private Logger logger;
 
         public BallViewModel()
         {
             //InitializeBalls(5);
             timer.Interval = TimeSpan.FromMilliseconds(20);
             timer.Tick += async (s, e) => await MoveBallsAsync2();
+            logger = new Logger("C:\\Users\\mluza\\source\\repos\\ProjektWsp\\ball_log.json");
             //timer.Start();
         }
 
@@ -46,6 +48,7 @@ namespace Project.ViewModel
             {
                 timer.Start();
             }
+            StartLogging();
         }
 
         /*private void MoveBalls()
@@ -83,11 +86,18 @@ namespace Project.ViewModel
             }
             await Task.WhenAll(moveTasks);
         }
-
-       /* protected virtual void OnPropertyChanged(string propertyName)
+        private async void StartLogging()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }*/
+            while (true)
+            {
+                await logger.LogAsync(Balls);
+                await Task.Delay(1000); // Log every second
+            }
+        }
+        /* protected virtual void OnPropertyChanged(string propertyName)
+         {
+             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+         }*/
     }
 
 
